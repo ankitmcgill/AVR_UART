@@ -87,22 +87,42 @@ int8_t AVR_UART_data_tx_block(uint8_t* data_block, uint8_t size)
 {
 	//SEND MULTIPLE BYTES OF DATA THROUGH UART PERIPHERAL
 
-	for(uint8_t i=size; size>0; size--)
+	while(size != 0)
 	{
-		while((UCSR0A & (1<<UDRE0)) == 0);
-		UDR0 = *data_block++;
+		AVR_UART_data_tx(*data_block);
+		data_block++;
+		size--;
 	}
 
 	return AVR_UART_OK;
 }
 
-int8_t AVR_UART_data_rx(uint8_t* data)
+int8_t AVR_UART_data_rx_blocking(uint8_t* data)
 {
 	//RECEIVE SINGLE BYTE OF DATA THROUGH UART PERIPHERAL
+	//BLOCKS TILL DATA AVAILABLE
 
 	//WAIT FOR DATA TO BE AVAILABLE
 	while((UCSR0A & (1<<RXC0)) == 0);
 	*data = UDR0;
+
+	return AVR_UART_OK;
+}
+
+int8_t AVR_UART_data_rx_non_blocking(uint8_t* data)
+{
+	//RECEIVE SINGLE BYTE OF DATA THROUGH UART PERIPHERAL
+	//NON BLOCKING. RETURNS ERROR IF NO DATA AVAILABLE
+
+	//CHECK IF DATA AVAILABLE
+	if((UCSR0A & (1<<RXC0)) != 0)
+	{
+		*data = UDR0;
+	}
+	else
+	{
+		return AVR_UART_ERROR;
+	}
 
 	return AVR_UART_OK;
 }

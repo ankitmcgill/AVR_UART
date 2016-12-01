@@ -46,7 +46,8 @@ int8_t AVR_UART_disable(void);
 int8_t AVR_UART_data_tx(uint8_t data);
 int8_t AVR_UART_data_tx_block(uint8_t* data_block, uint8_t size);
 
-int8_t AVR_UART_data_rx(uint8_t* data);
+int8_t AVR_UART_data_rx_blocking(uint8_t* data);
+int8_t AVR_UART_data_rx_non_blocking(uint8_t* data);
 int8_t AVR_UART_data_rx_block(uint8_t* data_block, uint8_t size);
 
 #endif
