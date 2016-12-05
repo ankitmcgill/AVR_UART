@@ -11,7 +11,7 @@
 
 #include "AVR_UART.h"
 
-int8_t AVR_UART_init(uint16_t baud, uint8_t data_size, uint8_t parity, uint8_t stop_bits)
+int8_t AVR_UART_init(uint16_t baud, uint8_t data_size, uint8_t parity, uint8_t stop_bits, uint8_t u2x)
 {
 	//INTIALIZE UART PERIPHERAL
 	//WITH THE SPECIFIED PARAMETERS
@@ -24,6 +24,9 @@ int8_t AVR_UART_init(uint16_t baud, uint8_t data_size, uint8_t parity, uint8_t s
 	//SET REMAINING PARAMETERS
 	UCSR0C |= parity;
 	UCSR0C |= stop_bits;
+
+	//SET U2X IF ENABLED
+	UCSR0A |= u2x;
 
 	switch(data_size)
 	{
@@ -89,8 +92,7 @@ int8_t AVR_UART_data_tx_block(uint8_t* data_block, uint8_t size)
 
 	while(size != 0)
 	{
-		AVR_UART_data_tx(*data_block);
-		data_block++;
+		AVR_UART_data_tx(*data_block++);
 		size--;
 	}
 
@@ -127,8 +129,31 @@ int8_t AVR_UART_data_rx_non_blocking(uint8_t* data)
 	return AVR_UART_OK;
 }
 
-int8_t AVR_UART_data_rx_block(uint8_t* data_block, uint8_t size)
+int8_t AVR_UART_data_rx_block(uint8_t* data_block, uint8_t* size)
 {
 	//RECEIVE MULTIPLE BYTES OF DATA THROUGH UART PERIPHERAL
+	//GET DATA TILL UART SIGNALS RX DATA PRESENT
+	//THEN COMPARE THE NUMBER OF BYTES RECEIVED WITH NO OF BYTES
+	//REQUESTED AND DEPENDING ON THAT, RETURN OK OR (ERROR + MODIFY
+	//SIZE PARAMETER POINTER TO THE NUMBER OF BYTES ACTUALLY READ
+	
+	uint8_t counter = 0;
+	
+	while(counter != (*size))
+	{
+		AVR_UART_data_rx_blocking(data_block);
 
+		//AVR_UART_data_tx(*data_block);
+
+		counter++;
+		data_block++;
+	}
+
+	//AVR_UART_data_tx('\n');
+
+	return AVR_UART_OK;
 }
+
+
+
+
