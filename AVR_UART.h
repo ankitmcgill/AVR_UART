@@ -16,8 +16,6 @@
 #include <avr/io.h>
 #include <util/delay.h>
 
-#define AVR_UART_FOSC		16000000
-
 #define AVR_UART_B2400		2400
 #define AVR_UART_B4800		4800
 #define AVR_UART_B4800		4800
@@ -43,16 +41,16 @@
 #define AVR_UART_U2X_OFF	(0)
 #define AVR_UART_U2X_ON		(1<<1)
 
-int8_t AVR_UART_init(uint16_t baud, uint8_t data_size, uint8_t parity, uint8_t stop_bits, uint8_t u2x);
+int8_t AVR_UART_Init(uint16_t baud, uint8_t data_size, uint8_t parity, uint8_t stop_bits, uint8_t u2x);
 
-int8_t AVR_UART_enable(void);
-int8_t AVR_UART_disable(void);
+int8_t AVR_UART_Enable(void);
+int8_t AVR_UART_Disable(void);
 
-int8_t AVR_UART_data_tx(uint8_t data);
-int8_t AVR_UART_data_tx_block(uint8_t* data_block, uint8_t size);
+int8_t AVR_UART_Data_Tx(uint8_t data);
+int8_t AVR_UART_Data_Tx_Block(uint8_t* data_block, uint8_t size);
 
-int8_t AVR_UART_data_rx_blocking(uint8_t* data);
-int8_t AVR_UART_data_rx_non_blocking(uint8_t* data);
-int8_t AVR_UART_data_rx_block(uint8_t* data_block, uint8_t* size);
+int8_t AVR_UART_Data_Rx_Blocking(uint8_t* data);
+int8_t AVR_UART_Data_Rx_Non_Blocking(uint8_t* data);
+int8_t AVR_UART_Data_Rx_Block(uint8_t* data_block, uint8_t* size);
 
 #endif

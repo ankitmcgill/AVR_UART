@@ -11,13 +11,13 @@
 
 #include "AVR_UART.h"
 
-int8_t AVR_UART_init(uint16_t baud, uint8_t data_size, uint8_t parity, uint8_t stop_bits, uint8_t u2x)
+int8_t AVR_UART_Init(uint16_t baud, uint8_t data_size, uint8_t parity, uint8_t stop_bits, uint8_t u2x)
 {
 	//INTIALIZE UART PERIPHERAL
 	//WITH THE SPECIFIED PARAMETERS
 	
 	//SET BAUDRATE
-	uint16_t ubbr_val = (AVR_UART_FOSC / (baud * 16UL)) - 1;
+	uint16_t ubbr_val = (F_CPU / (baud * 16UL)) - 1;
 	UBRR0H = (uint8_t)(ubbr_val>>8); //set UBRR register
 	UBRR0L = (uint8_t)ubbr_val;
 	
@@ -56,7 +56,7 @@ int8_t AVR_UART_init(uint16_t baud, uint8_t data_size, uint8_t parity, uint8_t s
 	return AVR_UART_OK;
 }
 
-int8_t AVR_UART_enable(void)
+int8_t AVR_UART_Enable(void)
 {
 	//ENABLE (CLOCK TO) UART PERIPHERAL
 	//ENABLE BOTH TX AND RX
@@ -65,7 +65,7 @@ int8_t AVR_UART_enable(void)
 	return AVR_UART_OK;
 }
 
-int8_t AVR_UART_disable(void)
+int8_t AVR_UART_Disable(void)
 {
 	//DISBALE (CLOCK TO) UART PERIPHERAL
 	//DISABLE BOTH TX AND RX
@@ -74,7 +74,7 @@ int8_t AVR_UART_disable(void)
 	return AVR_UART_OK;
 }
 
-int8_t AVR_UART_data_tx(uint8_t data)
+int8_t AVR_UART_Data_Tx(uint8_t data)
 {
 	//SEND SINGLE BYTE OF DATA THROUGH THE
 	//UART PERIPHERAL
@@ -86,20 +86,20 @@ int8_t AVR_UART_data_tx(uint8_t data)
 	return AVR_UART_OK;
 }
 
-int8_t AVR_UART_data_tx_block(uint8_t* data_block, uint8_t size)
+int8_t AVR_UART_Data_Tx_Block(uint8_t* data_block, uint8_t size)
 {
 	//SEND MULTIPLE BYTES OF DATA THROUGH UART PERIPHERAL
 
 	while(size != 0)
 	{
-		AVR_UART_data_tx(*data_block++);
+		AVR_UART_Data_Tx(*data_block++);
 		size--;
 	}
 
 	return AVR_UART_OK;
 }
 
-int8_t AVR_UART_data_rx_blocking(uint8_t* data)
+int8_t AVR_UART_Data_Rx_Blocking(uint8_t* data)
 {
 	//RECEIVE SINGLE BYTE OF DATA THROUGH UART PERIPHERAL
 	//BLOCKS TILL DATA AVAILABLE
@@ -111,7 +111,7 @@ int8_t AVR_UART_data_rx_blocking(uint8_t* data)
 	return AVR_UART_OK;
 }
 
-int8_t AVR_UART_data_rx_non_blocking(uint8_t* data)
+int8_t AVR_UART_Data_Rx_Non_Blocking(uint8_t* data)
 {
 	//RECEIVE SINGLE BYTE OF DATA THROUGH UART PERIPHERAL
 	//NON BLOCKING. RETURNS ERROR IF NO DATA AVAILABLE
@@ -129,7 +129,7 @@ int8_t AVR_UART_data_rx_non_blocking(uint8_t* data)
 	return AVR_UART_OK;
 }
 
-int8_t AVR_UART_data_rx_block(uint8_t* data_block, uint8_t* size)
+int8_t AVR_UART_Data_Rx_Block(uint8_t* data_block, uint8_t* size)
 {
 	//RECEIVE MULTIPLE BYTES OF DATA THROUGH UART PERIPHERAL
 	//GET DATA TILL UART SIGNALS RX DATA PRESENT
@@ -141,7 +141,7 @@ int8_t AVR_UART_data_rx_block(uint8_t* data_block, uint8_t* size)
 	
 	while(counter != (*size))
 	{
-		AVR_UART_data_rx_blocking(data_block);
+		AVR_UART_Data_Rx_Blocking(data_block);
 
 		//AVR_UART_data_tx(*data_block);
 
