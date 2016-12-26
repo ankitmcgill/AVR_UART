@@ -1,5 +1,6 @@
 //////////////////////////////////////////////
 // AVR UART LIBRARY
+// FOR ATMEGAxx8 SERIES
 //
 // ONLY IMPLEMENTS THE ASYNCHRONOUS MODE
 //
@@ -9,7 +10,7 @@
 // ANKIT.BHATNAGARINDIA@GMAIL.COM
 //////////////////////////////////////////////
 
-#include "AVR_UART.h"
+#include "AVR_UART_ATMEGA328.h"
 
 int8_t AVR_UART_Init(uint16_t baud, uint8_t data_size, uint8_t parity, uint8_t stop_bits, uint8_t u2x)
 {
