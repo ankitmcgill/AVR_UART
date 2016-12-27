@@ -19,12 +19,12 @@ int8_t AVR_UART_Init(uint16_t baud, uint8_t data_size, uint8_t parity, uint8_t s
 	
 	//SET BAUDRATE
 	uint16_t ubbr_val = (F_CPU / (baud * 16UL)) - 1;
-	UBRRH = (uint8_t)(ubbr_val >> 8); //set UBRR register
+	UBRRH = (uint8_t)(AVR_UART_URSEL_UBRRH | (ubbr_val >> 8)); //set UBRR register
 	UBRRL = (uint8_t)ubbr_val;
 	
 	//SET REMAINING PARAMETERS
-	UCSRC |= parity;
-	UCSRC |= stop_bits;
+	UCSRC |= (AVR_UART_URSEL_UCSRC | parity);
+	UCSRC |= (AVR_UART_URSEL_UCSRC | stop_bits);
 
 	//SET U2X IF ENABLED
 	UCSRA |= u2x;
@@ -35,19 +35,19 @@ int8_t AVR_UART_Init(uint16_t baud, uint8_t data_size, uint8_t parity, uint8_t s
 									break;
 		
 		case AVR_UART_DATASIZE_6:	
-									UCSRC |= (1 << 1);
+									UCSRC |= (AVR_UART_URSEL_UCSRC | (1 << 1));
 									break;
 		
 		case AVR_UART_DATASIZE_7:	
-									UCSRC |= (1 << 2);
+									UCSRC |= (AVR_UART_URSEL_UCSRC | (1 << 2));
 									break;
 
 		case AVR_UART_DATASIZE_8:	
-									UCSRC |= ((1 << 2) | (1 << 1));
+									UCSRC |= (AVR_UART_URSEL_UCSRC | (1 << 2) | (1 << 1));
 									break;
 
 		case AVR_UART_DATASIZE_9:	
-									UCSRC |= ((1 << 2) | (1 << 1));
+									UCSRC |= (AVR_UART_URSEL_UCSRC | (1 << 2) | (1 << 1));
 									UCSRB |= (1 << 2);
 									break;
 		default:

@@ -17,6 +17,9 @@
 #include <avr/io.h>
 #include <util/delay.h>
 
+#define AVR_UART_URSEL_UCSRC	(1 << 7)
+#define AVR_UART_URSEL_UBRRH	(0 << 7)
+
 #define AVR_UART_B2400		2400
 #define AVR_UART_B4800		4800
 #define AVR_UART_B4800		4800
